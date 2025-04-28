@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grievance Portal | EduVoice Connect</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      background-image: url('https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1950&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .menu-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(46, 119, 126, 0.9);
+      color: #fff;
+      width: 100%;
+      padding: 15px 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .menu {
+      font-size: 26px;
+      cursor: pointer;
+      padding: 10px 20px;
+      border: 2px solid #0e5457;
+      border-radius: 8px;
+      margin-left: 15px;
+      background-color: #9ea7a5;
+      color: #277975;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 89px;
+      left: 25px;
+      background-color: #1c2331;
+      border: 1px solid #346b79;
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      min-width: 200px;
+    }
+
+    .dropdown-content a {
+      color: #ffffff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #a8adad;
+      color: #000;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .search-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .search-box {
+      width: 400px;
+      padding: 12px 45px;
+      border: 2px solid #fdd835;
+      border-radius: 30px;
+      font-size: 16px;
+      background-color: #ffffff;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: gray;
+    }
+
+    .right-menu {
+      display: flex;
+      gap: 20px;
+    }
+
+    .right-menu a {
+      text-decoration: none;
+      color: #b3a79f;
+      font-size: 18px;
+      font-weight: 600;
+      padding: 12px 20px;
+      border-radius: 6px;
+    }
+
+    .right-menu a:hover {
+      background-color: #847b7e;
+      color: #000;
+    }
+
+    .section {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .section.active {
+      display: flex;
+    }
+
+    .section h1 {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .section p {
+      font-size: 18px;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+
+    .login-container {
+      background: linear-gradient(135deg, #698083, #616f70);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 320px;
+      text-align: center;
+    }
+
+    .login-btn {
+      width: calc(100% - 40px);
+      padding: 10px;
+      background: #024954;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 20px;
+    }
+
+    .login-btn:hover {
+      background: #43a047;
+    }
+
+    .input-group label {
+      color: #fff;
+    }
+
+    .input-group input {
+      background-color: #fefefe;
+    }
+
+    footer {
+      background-color: rgba(10, 20, 30, 0.9);
+      color: #f2f2f2;
+      text-align: center;
+      padding: 20px 10px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media screen and (max-width: 768px) {
+      .menu-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .search-box {
+        width: 90%;
+      }
+
+      .right-menu {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .right-menu a {
+        width: 100%;
+        padding: 10px;
+        text-align: left;
+      }
+
+      .login-container {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body onload="showSection('welcome')">
+  <div class="menu-bar">
+    <div class="menu" onclick="toggleDropdown()">☰</div>
+
+    <div id="dropdown" class="dropdown-content">
+      <a href="#" onclick="showSection('welcome')">Home</a>
+      <a href="#" onclick="showSection('login')">Login</a>
+      <a href="#" onclick="showSection('complaint')">Complaint Submission</a>
+      <a href="#" onclick="showSection('feedback')">Feedback</a>
+      <a href="#" onclick="showSection('status')">Status Track</a>
+      <a href="#" onclick="showSection('about')">About</a>
+    </div>
+
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-box" placeholder="Search..." />
+    </div>
+
+    <div class="right-menu">
+      <a href="#" onclick="showSection('welcome')">Home</a>
+      <a href="#" onclick="showSection('login')">Login</a>
+      <a href="#" onclick="showSection('about')">About</a>
+    </div>
+  </div>
+
+  <div id="welcome" class="section active">
+    <h1>🎓 Welcome to Student Grievance & Feedback System</h1>
+    <p>
+      Our platform is designed to empower students by giving them a voice.
+      Submit your concerns, suggestions, and feedback directly to the institution
+      with ease and transparency.
+    </p>
+  </div>
+
+  <div id="login" class="section">
+    <div class="login-container">
+      <h2 style="color:white;">Student Login</h2>
+      <p id="error-message" class="error-message" style="color: #ff5252; margin-bottom: 10px; display: none;"></p>
+      <form onsubmit="validateLogin(event)">
+        <div class="input-group" style="margin: 15px 20px; text-align: left;">
+          <label for="reg-number">Username</label>
+          <input type="text" id="reg-number" name="reg-number" placeholder="Enter Register Number" required style="width: calc(100% - 20px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        <div class="input-group" style="margin: 15px 20px; text-align: left;">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter Password" required style="width: calc(100% - 20px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="complaint" class="section">
+    <h1>📨 Complaint Submission</h1>
+    <p>Report academic or non-academic concerns securely to the right department.</p>
+  </div>
+
+  <div id="feedback" class="section">
+    <h1>🗣️ Feedback</h1>
+    <p>Your feedback helps us improve faculty, facilities, and services.</p>
+  </div>
+
+  <div id="status" class="section">
+    <h1>📊 Track Status</h1>
+    <p>Track your complaint or feedback progress in real-time.</p>
+  </div>
+
+  <div id="about" class="section">
+    <h1>ℹ️ About Us</h1>
+    <p>This system gives students a secure platform to raise their voice.</p>
+  </div>
+
+  <footer>
+    <p><strong>EduVoice Connect</strong> — Giving every student a voice.</p>
+    <p>Designed for educational institutions to handle student grievances and feedback.</p>
+    <p>© 2025 EduVoice Connect. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      document.getElementById("dropdown").classList.toggle("show");
+    }
+
+    window.onclick = function (e) {
+      if (!e.target.matches('.menu')) {
+        var dropdown = document.getElementById("dropdown");
+        if (dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
+        }
+      }
+    }
+
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    function validateLogin(event) {
+      event.preventDefault();
+      const regNumber = document.getElementById("reg-number").value;
+      const password = document.getElementById("password").value;
+      const errorMessage = document.getElementById("error-message");
+
+      if (regNumber !== "123456" || password !== "password123") {
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Invalid register number or password";
+        return;
+      }
+
+      alert("Login successful! Redirecting...");
+    }
+
+    const sectionKeywords = {
+      home: "welcome",
+      login: "login",
+      complaint: "complaint",
+      feedback: "feedback",
+      status: "status",
+      about: "about"
+    };
+
+    const searchBox = document.querySelector(".search-box");
+
+    searchBox.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        const query = this.value.toLowerCase().trim();
+        const matched = Object.entries(sectionKeywords).find(([key]) =>
+          key.includes(query)
+        );
+
+        const targetSection = matched ? matched[1] : "welcome";
+        showSection(targetSection);
+        this.value = "";
+      }
+    });
+  </script>
+</body>
+</html>
+
